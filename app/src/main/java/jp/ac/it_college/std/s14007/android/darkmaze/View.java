@@ -14,6 +14,8 @@ import android.view.SurfaceView;
  */
 public class View extends SurfaceView implements SurfaceHolder.Callback {
 
+    private Map map;
+
     private static final Paint PAINT = new Paint();
     private DrawThread drawThread;
     private Bitmap player;
@@ -47,9 +49,14 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     public void drawMaze(Canvas canvas) {
         int playerX = flickTouchListener.playerX;
         int playerY = flickTouchListener.playerY;
+        int blockSize = player.getHeight();
 
+        if (map == null) {
+            map = new Map(canvas.getWidth(), canvas.getHeight(), blockSize);
+        }
 
         canvas.drawColor(Color.WHITE);
+        map.drawMap(canvas);
         canvas.drawBitmap(player, playerX, playerY, PAINT);
     }
 
