@@ -19,8 +19,8 @@ public class Player {
 
     private OnMoveListener listener;
 
-    public void setOnMoverListener(OnMoveListener moverListener) {
-        listener = moverListener;
+    public void setOnMoveListener(OnMoveListener moveListener) {
+        listener = moveListener;
     }
 
     public Player(Bitmap bitmap, int left, int top) {
@@ -35,7 +35,7 @@ public class Player {
         canvas.drawBitmap(player, rect.left, rect.top, PAINT);
     }
 
-    void move(float xOffset, float yOffset) {
+    void move(int xOffset, int yOffset) {
         int align = yOffset >= 0 ? 1 : -1;
         while (!tryMoveVertical(yOffset)) {
             yOffset -= align;
@@ -47,26 +47,26 @@ public class Player {
         }
     }
 
-    private boolean tryMoveHorizontal(float xOffset) {
-        int left = rect.left + Math.round(xOffset);
+    private boolean tryMoveHorizontal(int xOffset) {
+        int left = rect.left + xOffset;
         int right = left + rect.width();
 
-        if (!listener.canMove(rect.left, rect.top, rect.right, rect.bottom)) {
+        /*if (!listener.canMove(left, rect.top, right, rect.bottom)) {
             return false;
-        }
+        }*/
 
         rect.left = left;
         rect.right = right;
         return true;
     }
 
-    private boolean tryMoveVertical(float yOffset) {
-        int top = rect.top + Math.round(yOffset);
-        int bottom = rect.bottom + rect.width();
+    private boolean tryMoveVertical(int yOffset) {
+        int top = rect.top + yOffset;
+        int bottom = rect.bottom + rect.height();
 
-        if (!listener.canMove(rect.left, top, rect.right, bottom)) {
+        /*if (!listener.canMove(rect.left, top, rect.right, bottom)) {
             return false;
-        }
+        }*/
 
         rect.top = top;
         rect.bottom = bottom;

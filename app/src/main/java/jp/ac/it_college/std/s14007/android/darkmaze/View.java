@@ -18,15 +18,16 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final Paint PAINT = new Paint();
     private DrawThread drawThread;
-    private Bitmap player;
+    private Bitmap playerBitmap;
     private FlickTouchListener flickTouchListener = new FlickTouchListener();
+    private Player player;
 
     public View(Context context) {
         super(context);
         getHolder().addCallback(this);
         this.setOnTouchListener(flickTouchListener);
 
-        player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
+        playerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player);
     }
 
     public void startDrawThread() {
@@ -49,15 +50,26 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     public void drawMaze(Canvas canvas) {
         int playerX = flickTouchListener.playerX;
         int playerY = flickTouchListener.playerY;
-        int blockSize = player.getHeight();
+        int blockSize = playerBitmap.getHeight();
+        player = flickTouchListener.player;
+
+        /*if (player != null) {
+            player.move(playerX, playerY);
+        }*/
 
         if (map == null) {
             map = new Map(canvas.getWidth(), canvas.getHeight(), blockSize);
         }
 
+        if (player == null) {
+            player = new Player(playerBitmap, blockSize, blockSize);
+            player.setOnMoveListener(map);
+        }
+
         canvas.drawColor(Color.WHITE);
         map.drawMap(canvas);
-        canvas.drawBitmap(player, playerX, playerY, PAINT);
+//        canvas.drawBitmap(playerBitmap, playerX, playerY, PAINT);
+        player.draw(canvas);
     }
 
     @Override
@@ -67,7 +79,6 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
     }
 
     @Override
