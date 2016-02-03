@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,31 +14,17 @@ import android.view.SurfaceView;
  */
 public class View extends SurfaceView implements SurfaceHolder.Callback {
 
-    private DrawThread drawThread;
     private static final Paint PAINT = new Paint();
+    private DrawThread drawThread;
     private Bitmap player;
+    private FlickTouchListener flickTouchListener = new FlickTouchListener();
 
     public View(Context context) {
         super(context);
         getHolder().addCallback(this);
+        this.setOnTouchListener(flickTouchListener);
 
         player = BitmapFactory.decodeResource(getResources(), R.drawable.player);
-    }
-
-    private class DrawThread extends Thread {
-        private boolean isFinished;
-
-        @Override
-        public void run() {
-
-            while (!isFinished) {
-                Canvas canvas = getHolder().lockCanvas();
-                if (canvas != null) {
-                    drawMaze(canvas);
-                    getHolder().unlockCanvasAndPost(canvas);
-                }
-            }
-        }
     }
 
     public void startDrawThread() {
@@ -58,11 +45,13 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawMaze(Canvas canvas) {
-        canvas.drawBitmap(player, 50, 50, PAINT);
+        int playerX = flickTouchListener.playerX;
+        int playerY = flickTouchListener.playerY;
+
+
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(player, playerX, playerY, PAINT);
     }
-
-
-
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
@@ -77,5 +66,21 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         stopDrawThread();
+    }
+
+    private class DrawThread extends Thread {
+        private boolean isFinished;
+
+        @Override
+        public void run() {
+
+            while (!isFinished) {
+                Canvas canvas = getHolder().lockCanvas();
+                if (canvas != null) {
+                    drawMaze(canvas);
+                    getHolder().unlockCanvasAndPost(canvas);
+                }
+            }
+        }
     }
 }
