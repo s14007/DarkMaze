@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Created by s14007 on 16/02/03.
  */
-public class Map {
+public class Map implements Player.OnMoveListener {
     private int blockSize;
     private int horizontalBlockNum;
     private int verticalBlockNum;
@@ -54,6 +54,19 @@ public class Map {
                 blocks[y][x].draw(canvas);
             }
         }
+    }
+
+    @Override
+    public boolean canMove(int left, int top, int right, int bottom) {
+        for (int y = 0; y < verticalBlockNum; y++) {
+            for (int x = 0; x < horizontalBlockNum; x++) {
+                if (blocks[y][x] .type == Block.TYPE_WALL
+                        && blocks[y][x].rect.intersects(left, top, right, bottom)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     static class Block {
