@@ -50,7 +50,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     public void drawMaze(Canvas canvas) {
         int playerX = flickTouchListener.playerX;
         int playerY = flickTouchListener.playerY;
-        int blockSize = playerBitmap.getHeight();
+        int blockSize = 50;
         player = flickTouchListener.player;
 
         /*if (player != null) {
@@ -66,6 +66,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
             player.setOnMoveListener(map);
         }
 
+        flickTouchListener.player = player;
         canvas.drawColor(Color.WHITE);
         map.drawMap(canvas);
 //        canvas.drawBitmap(playerBitmap, playerX, playerY, PAINT);
