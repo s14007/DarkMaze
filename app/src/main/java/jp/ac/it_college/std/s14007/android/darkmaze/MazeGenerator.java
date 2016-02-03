@@ -30,7 +30,7 @@ public class MazeGenerator {
                 } else if (x == 0 || x == horizontalBlockNum - 1) {
                     result[y][x] = WALL;
                 } else if (x > 1 && x % 2 == 0 && y > 1 && y % 2 == 0) {
-                    result[y][x] = WALL;
+                    result[y][x] = POLL;
                 } else {
                     result[y][x] = FLOOR;
                 }
@@ -57,7 +57,7 @@ public class MazeGenerator {
                                 Arrays.asList(Direction.TOP, Direction.LEFT,
                                         Direction.RIGHT, Direction.BOTTOM));
                     } else {
-                        directionList = new ArrayList<Direction>(
+                        directionList = new ArrayList<>(
                                 Arrays.asList(Direction.LEFT, Direction.RIGHT,
                                         Direction.BOTTOM));
                     }
@@ -105,7 +105,7 @@ public class MazeGenerator {
 
         map[y][x] = WALL;
 
-        return false;
+        return true;
     }
 
 

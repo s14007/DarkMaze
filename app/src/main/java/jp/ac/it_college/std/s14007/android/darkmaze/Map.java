@@ -17,21 +17,28 @@ public class Map {
 
     private Block[][] blocks;
 
-    Random rand = new Random(0);
-
     public Map(int width, int height, int bs) {
         this.blockSize = bs;
         horizontalBlockNum = width / blockSize;
         verticalBlockNum = height / blockSize;
 
+        if (horizontalBlockNum % 2 == 0) {
+            horizontalBlockNum--;
+        }
+
+        if (verticalBlockNum % 2 == 0) {
+            verticalBlockNum--;
+        }
+
         createMap();
     }
 
     private void createMap() {
+        int[][] map = MazeGenerator.getMap(255, horizontalBlockNum, verticalBlockNum);
         blocks = new Block[verticalBlockNum][horizontalBlockNum];
         for (int y = 0; y < verticalBlockNum; y++) {
             for (int x = 0; x < horizontalBlockNum; x++) {
-                int type = rand.nextInt(2);
+                int type = map[y][x];
                 int left = x * blockSize + 1;
                 int top = y * blockSize + 1;
                 int right = left + blockSize - 2;
