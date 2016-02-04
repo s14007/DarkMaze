@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by s14007 on 16/02/03.
- */
+
 public class MazeGenerator {
     public static final int FLOOR = 0;
     public static final int WALL = 1;
+    public static final int START = 2;
+    public static final int GOAL = 3;
     public static final int POLL = -1;
 
     public enum Direction {

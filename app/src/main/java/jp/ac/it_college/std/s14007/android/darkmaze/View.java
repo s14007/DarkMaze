@@ -16,6 +16,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     private Bitmap playerBitmap;
     private FlickTouchListener flickTouchListener = new FlickTouchListener();
     private Player player;
+    private static final float BALL_SCALE = 0.8f;
 
     public View(Context context) {
         super(context);
@@ -55,13 +56,13 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         if (player == null) {
-            player = new Player(playerBitmap, blockSize, blockSize);
+            player = new Player(playerBitmap, blockSize, blockSize, BALL_SCALE);
             player.setOnMoveListener(map);
         }
 
         flickTouchListener.player = player;
-        canvas.drawColor(Color.WHITE);
         map.drawMap(canvas);
+        canvas.drawColor(Color.WHITE);
         player.draw(canvas);
     }
 

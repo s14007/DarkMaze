@@ -7,31 +7,34 @@ import android.graphics.Rect;
 import android.util.Log;
 
 public class Player {
-    private Bitmap player;
-    private final Rect rect;
     private static final Paint PAINT = new Paint();
+    private final Rect rect;
+    private final Rect srcRect;
+    private Bitmap player;
+    private OnMoveListener listener;
 
-    public interface OnMoveListener {
-        boolean canMove(int left, int top, int right, int bottom);
+    public Player(Bitmap bitmap, int left, int top, float scale) {
+        player = bitmap;
+
+//        int right = left + bitmap.getWidth();
+//        int bottom = top + bitmap.getHeight();
+        int right = left + Math.round(bitmap.getWidth() * scale);
+        int bottom = top + Math.round(bitmap.getHeight() * scale);
+        rect = new Rect(left, top, right, bottom);
+
+        srcRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
     }
 
-    private OnMoveListener listener;
+    public Player(Bitmap bitmap, Map.Block startBlock, float scale) {
+        this(bitmap, startBlock.rect.left, startBlock.rect.top, scale);
+    }
 
     public void setOnMoveListener(OnMoveListener moveListener) {
         listener = moveListener;
     }
 
-    public Player(Bitmap bitmap, int left, int top) {
-        player = bitmap;
-
-        int right = left + bitmap.getWidth();
-        int bottom = top + bitmap.getHeight();
-        rect = new Rect(left, top, right, bottom);
-    }
-
     void draw(Canvas canvas) {
-//        canvas.rotate(90);
-        canvas.drawBitmap(player, rect.left, rect.top, PAINT);
+        canvas.drawBitmap(player, srcRect, rect, PAINT);
     }
 
     void move(int xOffset, int yOffset) {
@@ -74,5 +77,9 @@ public class Player {
         rect.top = top;
         rect.bottom = bottom;
         return true;
+    }
+
+    public interface OnMoveListener {
+        boolean canMove(int left, int top, int right, int bottom);
     }
 }
