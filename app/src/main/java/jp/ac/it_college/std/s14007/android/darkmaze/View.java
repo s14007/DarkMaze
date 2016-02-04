@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -44,7 +46,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawMaze(Canvas canvas) {
-        int blockSize = playerBitmap.getHeight();
+        int blockSize = 100;
         player = flickTouchListener.player;
 
         /*if (player != null) {
@@ -56,13 +58,19 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         if (player == null) {
-            player = new Player(playerBitmap, blockSize, blockSize, BALL_SCALE);
+            player = new Player(playerBitmap, map.getStartBlock(), BALL_SCALE);
             player.setOnMoveListener(map);
         }
 
         flickTouchListener.player = player;
-        map.drawMap(canvas);
         canvas.drawColor(Color.WHITE);
+        map.drawMap(canvas);
+        Paint paint = new Paint();
+        paint.setColor(Color.BLUE);
+        Paint paintGoal = new Paint();
+        paintGoal.setColor(Color.RED);
+        canvas.drawRect(map.getStartBlock().rect, paint);
+        canvas.drawRect(map.getGoalBlock().rect, paintGoal);
         player.draw(canvas);
     }
 

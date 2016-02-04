@@ -13,6 +13,16 @@ public class Map implements Player.OnMoveListener {
 
     private Block[][] blocks;
     private Block[][] targetBlock = new Block[3][3];
+    private Block startBlock;
+    private Block goalBlock;
+
+    public Block getStartBlock() {
+        return startBlock;
+    }
+
+    public Block getGoalBlock() {
+        return goalBlock;
+    }
 
     public Map(int width, int height, int bs) {
         this.blockSize = bs;
@@ -31,11 +41,11 @@ public class Map implements Player.OnMoveListener {
     }
 
     private void createMap() {
-        int[][] map = MazeGenerator.getMap(255, horizontalBlockNum, verticalBlockNum);
+        MazeGenerator.MapResult map = MazeGenerator.getMap(255, horizontalBlockNum, verticalBlockNum);
         blocks = new Block[verticalBlockNum][horizontalBlockNum];
         for (int y = 0; y < verticalBlockNum; y++) {
             for (int x = 0; x < horizontalBlockNum; x++) {
-                int type = map[y][x];
+                int type = map.result[y][x];
                 int left = x * blockSize + 1;
                 int top = y * blockSize + 1;
                 int right = left + blockSize - 2;
@@ -43,6 +53,8 @@ public class Map implements Player.OnMoveListener {
                 blocks[y][x] = new Block(type, left, top, right, bottom);
             }
         }
+        startBlock = blocks[map.startY][map.startX];
+        goalBlock = blocks[map.maxScoreY][map.maxScoreX];
     }
 
     void drawMap(Canvas canvas) {
@@ -111,13 +123,19 @@ public class Map implements Player.OnMoveListener {
     static class Block {
         private static final int TYPE_FLOOR = 0;
         private static final int TYPE_WALL = 1;
+        private static final int TYPE_START = 2;
+        private static final int TYPE_GOAL = 3;
 
         private static final Paint PAINT_FLOOR = new Paint();
         private static final Paint PAINT_WALL = new Paint();
+        private static final Paint PAINT_START = new Paint();
+        private static final Paint PAINT_GOAL = new Paint();
 
         static {
             PAINT_FLOOR.setColor(Color.LTGRAY);
             PAINT_WALL.setColor(Color.BLACK);
+            PAINT_START.setColor(Color.BLUE);
+            PAINT_GOAL.setColor(Color.RED);
         }
 
         private final int type;
@@ -133,6 +151,10 @@ public class Map implements Player.OnMoveListener {
             switch (type) {
                 case TYPE_FLOOR:
                     return PAINT_FLOOR;
+                case TYPE_START:
+                    return PAINT_START;
+                case TYPE_GOAL:
+                    return PAINT_GOAL;
                 case TYPE_WALL:
                     return PAINT_WALL;
             }

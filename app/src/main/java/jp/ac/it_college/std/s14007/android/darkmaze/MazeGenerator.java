@@ -20,7 +20,24 @@ public class MazeGenerator {
         BOTTOM,
     }
 
-    public static int[][] getMap(int seed, int horizontalBlockNum, int verticalBlockNum) {
+    public static class MapResult {
+        final int[][] result;
+        final int startY;
+        final int startX;
+        final int maxScoreY;
+        final int maxScoreX;
+
+
+        MapResult(int[][] result, int startY, int startX, int maxScoreY, int maxScoreX) {
+            this.result = result;
+            this.startY = startY;
+            this.startX = startX;
+            this.maxScoreY = maxScoreY;
+            this.maxScoreX = maxScoreX;
+        }
+    }
+
+    public static MapResult getMap(int seed, int horizontalBlockNum, int verticalBlockNum) {
         int[][] result = new int[verticalBlockNum][horizontalBlockNum];
 
         for (int y = 0; y < verticalBlockNum; y++) {
@@ -38,7 +55,67 @@ public class MazeGenerator {
         }
 
         result = generateMaze(seed, result);
-        return result;
+
+        int startY = -1;
+        int startX = -1;
+
+        for (int y = verticalBlockNum - 1; y >= 0; y--) {
+            for (int x = horizontalBlockNum - 1; x >= 0; x--) {
+                if (result[y][x] == FLOOR) {
+                    startY = y;
+                    startX = x;
+                    result[startY][startX] = START;
+                    break;
+                }
+            }
+            if (startY != -1 && startX != -1) {
+                break;
+            }
+        }
+
+        int[][] steps = new int[verticalBlockNum][horizontalBlockNum];
+        calcStep(result, startY, startX, steps, 0);
+
+        int maxScore = 0;
+        int maxScoreY = 0;
+        int maxScoreX = 0;
+
+        for (int y = 0; y < verticalBlockNum; y++) {
+            for (int x = 0; x < horizontalBlockNum; x++) {
+                if (steps[y][x] > maxScore) {
+                    maxScore = steps[y][x];
+                    maxScoreY = y;
+                    maxScoreX = x;
+                }
+            }
+        }
+
+        result[maxScoreY][maxScoreX] = GOAL;
+
+        return new MapResult(result, startY,startX, maxScoreY, maxScoreX);
+    }
+
+    private static int[][] calcStep(int[][] map, int y, int x, int[][] steps, int score) {
+        score++;
+
+        if (y < 0 || x < 0 || y >= map.length || x >= map[0].length) {
+            return steps;
+        }
+
+        if (map[y][x] == WALL) {
+            steps[y][x] = -1;
+            return steps;
+        }
+
+        if (steps[y][x] == 0 || steps[y][x] > score) {
+            steps[y][x] = score;
+
+            calcStep(map, y, x + 1, steps, score);
+            calcStep(map, y + 1, x, steps, score);
+            calcStep(map, y, x - 1, steps, score);
+            calcStep(map, y - 1, x, steps, score);
+        }
+        return steps;
     }
 
     private static int[][] generateMaze(int seed, int[][] map) {
