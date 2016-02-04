@@ -37,14 +37,14 @@ public class Player {
         int align = yOffset >= 0 ? 1 : -1;
         while (!tryMoveVertical(yOffset)) {
 //            yOffset -= align;
-            yOffset = 0;
+            yOffset -= align;
             Log.e("logY", "" + yOffset);
         }
 
         align = xOffset >= 0 ? 1 : -1;
         while (!tryMoveHorizontal(xOffset)) {
 //            xOffset -= align;
-            xOffset = 0;
+            xOffset -= align;
             Log.e("logX", "" + xOffset);
         }
     }

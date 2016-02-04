@@ -50,7 +50,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     public void drawMaze(Canvas canvas) {
         int playerX = flickTouchListener.playerX;
         int playerY = flickTouchListener.playerY;
-        int blockSize = 50;
+        int blockSize = playerBitmap.getHeight();
         player = flickTouchListener.player;
 
         /*if (player != null) {

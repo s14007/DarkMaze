@@ -20,6 +20,8 @@ public class FlickTouchListener implements View.OnTouchListener {
     public int playerY = 0;
     private int ballSize = 50;
 
+    private int move = 5;
+
     // 最後にタッチされた座標
     private float startTouchX;
     private float startTouchY;
@@ -36,6 +38,8 @@ public class FlickTouchListener implements View.OnTouchListener {
 
         if (player != null) {
             player.move(-playerX, playerY);
+            playerX = 0;
+            playerY = 0;
         }
 
         // タッチされている指の本数
@@ -76,13 +80,13 @@ public class FlickTouchListener implements View.OnTouchListener {
                             if (startTouchY > nowTouchedY + adjust) {
                                 Log.v("Flick", "--上");
                                 // 上フリック時の処理を記述する
-                                --playerY;
+                                playerY -= move;
                             }
                         } else if ((startTouchY - nowTouchedY) < (startTouchX - nowTouchedX)) {
                             if (startTouchX > nowTouchedX + adjust) {
                                 Log.v("Flick", "--左");
                                 // 左フリック時の処理を記述する
-                                ++playerX;
+                                playerX += move;
                             }
                         }
                     } else if (startTouchX < nowTouchedX) {
@@ -90,13 +94,13 @@ public class FlickTouchListener implements View.OnTouchListener {
                             if (startTouchY > nowTouchedY + adjust) {
                                 Log.v("Flick", "--上");
                                 // 上フリック時の処理を記述する
-                                --playerY;
+                                playerY -= move;
                             }
                         } else if ((startTouchY - nowTouchedY) < (nowTouchedX - startTouchX)) {
                             if (startTouchX < nowTouchedX + adjust) {
                                 Log.v("Flick", "--右");
                                 // 右フリック時の処理を記述する
-                                --playerX;
+                                playerX -= move;
                             }
                         }
                     }
@@ -106,13 +110,13 @@ public class FlickTouchListener implements View.OnTouchListener {
                             if (startTouchY < nowTouchedY + adjust) {
                                 Log.v("Flick", "--下");
                                 // 下フリック時の処理を記述する
-                                ++playerY;
+                                playerY += move;
                             }
                         } else if ((nowTouchedY - startTouchY) < (startTouchX - nowTouchedX)) {
                             if (startTouchX > nowTouchedX + adjust) {
                                 Log.v("Flick", "--左");
                                 // 左フリック時の処理を記述する
-                                ++playerX;
+                                playerX += move;
                             }
                         }
                     } else if (startTouchX < nowTouchedX) {
@@ -120,13 +124,13 @@ public class FlickTouchListener implements View.OnTouchListener {
                             if (startTouchY < nowTouchedY + adjust) {
                                 Log.v("Flick", "--下");
                                 // 下フリック時の処理を記述する
-                                ++playerY;
+                                playerY += move;
                             }
                         } else if ((nowTouchedY - startTouchY) < (nowTouchedX - startTouchX)) {
                             if (startTouchX < nowTouchedX + adjust) {
                                 Log.v("Flick", "--右");
                                 // 右フリック時の処理を記述する
-                                --playerX;
+                                playerX -= move;
                             }
                         }
                     }
