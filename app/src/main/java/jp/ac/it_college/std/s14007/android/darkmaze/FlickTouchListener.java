@@ -4,9 +4,6 @@ import android.util.Log;
 import android.view.*;
 import android.view.View;
 
-/**
- * Created by s14007 on 16/02/03.
- */
 public class FlickTouchListener implements View.OnTouchListener {
     // レイアウトの定数を省略してメンバに保持
 //    private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -18,7 +15,6 @@ public class FlickTouchListener implements View.OnTouchListener {
     public Player player;
     public int playerX = 0;
     public int playerY = 0;
-    private int ballSize = 50;
 
     private int move = 5;
 

@@ -5,18 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-/**
- * Created by s14007 on 16/02/03.
- */
 public class View extends SurfaceView implements SurfaceHolder.Callback {
 
     private Map map;
 
-    private static final Paint PAINT = new Paint();
     private DrawThread drawThread;
     private Bitmap playerBitmap;
     private FlickTouchListener flickTouchListener = new FlickTouchListener();
@@ -48,8 +43,6 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawMaze(Canvas canvas) {
-        int playerX = flickTouchListener.playerX;
-        int playerY = flickTouchListener.playerY;
         int blockSize = playerBitmap.getHeight();
         player = flickTouchListener.player;
 
@@ -69,7 +62,6 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         flickTouchListener.player = player;
         canvas.drawColor(Color.WHITE);
         map.drawMap(canvas);
-//        canvas.drawBitmap(playerBitmap, playerX, playerY, PAINT);
         player.draw(canvas);
     }
 

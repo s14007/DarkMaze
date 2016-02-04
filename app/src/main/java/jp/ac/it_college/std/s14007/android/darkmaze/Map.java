@@ -4,13 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
-import java.util.Random;
 
-/**
- * Created by s14007 on 16/02/03.
- */
 public class Map implements Player.OnMoveListener {
     private int blockSize;
     private int horizontalBlockNum;

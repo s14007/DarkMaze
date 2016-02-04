@@ -30,6 +30,7 @@ public class Player {
     }
 
     void draw(Canvas canvas) {
+//        canvas.rotate(90);
         canvas.drawBitmap(player, rect.left, rect.top, PAINT);
     }
 
