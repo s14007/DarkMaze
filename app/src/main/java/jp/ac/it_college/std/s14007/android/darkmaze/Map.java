@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 
 public class Map implements Player.OnMoveListener {
@@ -15,6 +16,7 @@ public class Map implements Player.OnMoveListener {
     private Block[][] targetBlock = new Block[3][3];
     private Block startBlock;
     private Block goalBlock;
+    private View.Callback callback;
 
     public Block getStartBlock() {
         return startBlock;
@@ -24,10 +26,12 @@ public class Map implements Player.OnMoveListener {
         return goalBlock;
     }
 
-    public Map(int width, int height, int bs) {
+    public Map(int width, int height, int bs, View.Callback cb) {
         this.blockSize = bs;
         horizontalBlockNum = width / blockSize;
         verticalBlockNum = height / blockSize;
+        callback = cb;
+
 
         if (horizontalBlockNum % 2 == 0) {
             horizontalBlockNum--;
@@ -92,6 +96,10 @@ public class Map implements Player.OnMoveListener {
                 if (targetBlock[y][x].type == Block.TYPE_WALL
                         && targetBlock[y][x].rect.intersects(left, top, right, bottom)) {
                     return false;
+                } else if (targetBlock[y][x].type == Block.TYPE_GOAL
+                        && targetBlock[y][x].rect.contains(left, top, right, bottom)) {
+                    callback.onGoal();
+                    return true;
                 }
             }
         }
