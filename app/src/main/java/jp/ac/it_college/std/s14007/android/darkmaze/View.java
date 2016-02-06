@@ -46,7 +46,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawMaze(Canvas canvas) {
-        int blockSize = 5;
+        int blockSize = 1;
         player = flickTouchListener.player;
 
         /*if (player != null) {
