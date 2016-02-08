@@ -15,8 +15,10 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
     private Bitmap playerBitmap;
+    private Bitmap enemyBitmap;
     private FlickTouchListener flickTouchListener = new FlickTouchListener();
     private Player player;
+    private Enemy enemy;
     private static final float BALL_SCALE = 0.8f;
     private Callback callback;
 
@@ -26,6 +28,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         this.setOnTouchListener(flickTouchListener);
 
         playerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.player);
+        enemyBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.enemy);
     }
 
     public void startDrawThread() {
@@ -46,8 +49,11 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawMaze(Canvas canvas) {
-        int blockSize = 1;
+        int blockSize = playerBitmap.getHeight();
         player = flickTouchListener.player;
+
+        enemy = new Enemy(enemyBitmap);
+
 
         /*if (player != null) {
             player.move(playerX, playerY);
@@ -69,10 +75,11 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         Paint paintGoal = new Paint();
-        paintGoal.setColor(Color.RED);
+        paintGoal.setColor(Color.YELLOW);
         canvas.drawRect(map.getStartBlock().rect, paint);
         canvas.drawRect(map.getGoalBlock().rect, paintGoal);
         player.draw(canvas);
+        enemy.draw(canvas);
     }
 
     public void setCallback(Callback callback) {
