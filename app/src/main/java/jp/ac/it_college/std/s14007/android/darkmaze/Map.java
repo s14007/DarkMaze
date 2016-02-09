@@ -98,6 +98,7 @@ public class Map implements Player.OnMoveListener, Enemy.OnMoveListener {
                     return false;
                 } else if (targetBlock[y][x].type == Block.TYPE_GOAL
                         && targetBlock[y][x].rect.contains(left, top, right, bottom)) {
+                    Log.e("log :", "eeee");
                     callback.onGoal();
                     return true;
                 }

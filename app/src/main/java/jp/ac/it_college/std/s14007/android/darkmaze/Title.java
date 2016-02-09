@@ -105,6 +105,7 @@ public class Title extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Title.this, Home.class);
                 startActivity(intent);
+                finish();
             }
         });
 

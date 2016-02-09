@@ -1,6 +1,8 @@
 package jp.ac.it_college.std.s14007.android.darkmaze;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,7 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
     private MainTimerTask mainTimerTask;
     private TextView countText;					//テキストビュー
     private int count = 0;						//カウント
+    private int minuteCount = 0;
     private Handler mHandler = new Handler();   //UI Threadへのpost用ハンドラ
 
     @Override
@@ -29,9 +32,13 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        int exp = prefs.getInt("exp", 0);
+
         ProgressBar bar = (ProgressBar)findViewById(R.id.progressBar1);
-        bar.setMax(100);
-        bar.setProgress(80);
+        bar.setMax(100000000);
+        Log.e("log :", "" + exp);
+        bar.setProgress(exp);
 
         Button button_hard = (Button)findViewById(R.id.button_hard);
         button_hard.setOnClickListener(new View.OnClickListener() {
@@ -81,11 +88,14 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
         @Override
         public void run() {
             //ここに定周期で実行したい処理を記述します
-            mHandler.post( new Runnable() {
+            mHandler.post(new Runnable() {
                 public void run() {
 
                     //実行間隔分を加算処理
                     count += 1;
+                    if (count % 60 == 0) {
+                        minuteCount += 1;
+                    }
                     //画面にカウントを表示
 //                    countText.setText(String.valueOf(count));
                 }
@@ -97,10 +107,11 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
     @Override
     public void onGoal() {
         Toast.makeText(this, "Goal!!", Toast.LENGTH_SHORT).show();
-        mainTimer.cancel();
         view.stopDrawThread();
+        mainTimer.cancel();
         Intent intent = new Intent(this, Result.class);
         intent.putExtra("time", count);
+        intent.putExtra("minute", minuteCount);
         startActivity(intent);
         finish();
     }
