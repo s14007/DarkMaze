@@ -33,7 +33,6 @@ public class Title extends AppCompatActivity {
     }
 
     private Handler mHandler = new Handler();
-    private ScheduledExecutorService mScheduledExecutor;
     private ImageButton mLblMeasuring;
 
     private void startMeasure() {
@@ -54,7 +53,7 @@ public class Title extends AppCompatActivity {
          * new Runnable（無名オブジェクト）をすぐに（0秒後に）実行し、完了後1700ミリ秒ごとに繰り返す。
          * （ただしアニメーションの完了からではない。Handler#postが即時実行だから？？）
          */
-        mScheduledExecutor = Executors.newScheduledThreadPool(2);
+        ScheduledExecutorService mScheduledExecutor = Executors.newScheduledThreadPool(2);
 
         mScheduledExecutor.scheduleWithFixedDelay(new Runnable() {
             @Override
@@ -77,7 +76,7 @@ public class Title extends AppCompatActivity {
             private void animateAlpha() {
 
                 // 実行するAnimatorのリスト
-                List<Animator> animatorList = new ArrayList<Animator>();
+                List<Animator> animatorList = new ArrayList<>();
 
                 // alpha値を0から1へ1000ミリ秒かけて変化させる。
                 ObjectAnimator animeFadeIn = ObjectAnimator.ofFloat(mLblMeasuring, "alpha", 0f, 1f);

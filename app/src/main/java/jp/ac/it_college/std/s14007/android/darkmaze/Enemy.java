@@ -6,18 +6,27 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
-public class Player {
-    private static final Paint PAINT = new Paint();
+import java.util.Random;
+
+public class Enemy {
+    Random random;
+    Bitmap enemyBitmap;
+    Paint paint = new Paint();
+    private OnMoveListener listener;
     private final Rect rect;
     private final Rect srcRect;
-    private Bitmap player;
-    private OnMoveListener listener;
 
-    public Player(Bitmap bitmap, int left, int top, float scale) {
-        player = bitmap;
+    public void setOnMoveListener(OnMoveListener moveListener) {
+        listener = moveListener;
+    }
 
-//        int right = left + bitmap.getWidth();
-//        int bottom = top + bitmap.getHeight();
+    public interface OnMoveListener {
+        boolean canMove(int left, int top, int right, int bottom);
+    }
+
+    public Enemy(Bitmap bitmap, int left, int top, float scale) {
+        enemyBitmap = bitmap;
+
         int right = left + Math.round(bitmap.getWidth() * scale);
         int bottom = top + Math.round(bitmap.getHeight() * scale);
         rect = new Rect(left, top, right, bottom);
@@ -25,23 +34,19 @@ public class Player {
         srcRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
     }
 
-    public Player(Bitmap bitmap, Map.Block startBlock, float scale) {
+    public Enemy(Bitmap bitmap, Map.Block startBlock, float scale) {
         this(bitmap, startBlock.rect.left, startBlock.rect.top, scale);
     }
 
-    public void setOnMoveListener(OnMoveListener moveListener) {
-        listener = moveListener;
-    }
-
     void draw(Canvas canvas) {
-        canvas.drawBitmap(player, srcRect, rect, PAINT);
+        canvas.drawBitmap(enemyBitmap, srcRect, rect, paint);
     }
 
     void move(int xOffset, int yOffset) {
         int align = yOffset >= 0 ? 1 : -1;
         while (!tryMoveVertical(yOffset)) {
             yOffset -= align;
-
+            Log.e("logY", "" + yOffset);
         }
 
         align = xOffset >= 0 ? 1 : -1;
@@ -74,9 +79,5 @@ public class Player {
         rect.top = top;
         rect.bottom = bottom;
         return true;
-    }
-
-    public interface OnMoveListener {
-        boolean canMove(int left, int top, int right, int bottom);
     }
 }

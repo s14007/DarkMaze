@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.*;
 import android.view.View;
 
+import java.util.Random;
+
 public class FlickTouchListener implements View.OnTouchListener {
     // レイアウトの定数を省略してメンバに保持
 //    private final int MP = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -13,10 +15,11 @@ public class FlickTouchListener implements View.OnTouchListener {
     //--------------------------------------------------------------------------
 
     public Player player;
+    public Enemy enemy;
     public int playerX = 0;
     public int playerY = 0;
 
-    private int move = 5;
+    private int move = 50;
 
     // 最後にタッチされた座標
     private float startTouchX;
@@ -34,6 +37,13 @@ public class FlickTouchListener implements View.OnTouchListener {
 
         if (player != null) {
             player.move(-playerX, playerY);
+            playerX = 0;
+            playerY = 0;
+        }
+
+        if (enemy != null) {
+            Random random = new Random(1);
+            enemy.move(-playerX, playerY);
             playerX = 0;
             playerY = 0;
         }

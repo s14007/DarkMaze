@@ -7,7 +7,7 @@ import android.graphics.Rect;
 import android.util.Log;
 
 
-public class Map implements Player.OnMoveListener {
+public class Map implements Player.OnMoveListener, Enemy.OnMoveListener {
     private int blockSize;
     private int horizontalBlockNum;
     private int verticalBlockNum;

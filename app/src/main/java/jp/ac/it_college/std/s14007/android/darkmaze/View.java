@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -21,9 +22,11 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     private Enemy enemy;
     private static final float BALL_SCALE = 0.8f;
     private Callback callback;
+    private int dungeonLevel;
 
-    public View(Context context) {
+    public View(Context context, int dungeonLevel) {
         super(context);
+        this.dungeonLevel = dungeonLevel;
         getHolder().addCallback(this);
         this.setOnTouchListener(flickTouchListener);
 
@@ -36,6 +39,8 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
 
         drawThread = new DrawThread();
         drawThread.start();
+        callback.timer();
+
     }
 
     public boolean stopDrawThread() {
@@ -49,15 +54,21 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void drawMaze(Canvas canvas) {
-        int blockSize = playerBitmap.getHeight();
+        int blockSize = 0;
+        switch (dungeonLevel) {
+            case 0:
+                blockSize = 150;
+                break;
+            case 1:
+                blockSize = 50;
+                break;
+            case 2:
+                blockSize = playerBitmap.getHeight();
+                break;
+        }
+
         player = flickTouchListener.player;
-
-        enemy = new Enemy(enemyBitmap);
-
-
-        /*if (player != null) {
-            player.move(playerX, playerY);
-        }*/
+        enemy = flickTouchListener.enemy;
 
         if (map == null) {
             map = new Map(canvas.getWidth(), canvas.getHeight(), blockSize, callback);
@@ -69,7 +80,13 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
             player.setOnMoveListener(map);
         }
 
+        if (enemy == null) {
+            enemy = new Enemy(enemyBitmap, map.getStartBlock(), BALL_SCALE);
+            enemy.setOnMoveListener(map);
+        }
+
         flickTouchListener.player = player;
+        flickTouchListener.enemy = enemy;
         canvas.drawColor(Color.BLACK);
         map.drawMap(canvas);
         Paint paint = new Paint();
@@ -117,6 +134,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     interface Callback {
-        public void onGoal();
+        void timer();
+        void onGoal();
     }
 }
