@@ -41,7 +41,6 @@ public class Player {
         int align = yOffset >= 0 ? 1 : -1;
         while (!tryMoveVertical(yOffset)) {
             yOffset -= align;
-
         }
 
         align = xOffset >= 0 ? 1 : -1;

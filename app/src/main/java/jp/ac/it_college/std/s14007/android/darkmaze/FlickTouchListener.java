@@ -19,7 +19,7 @@ public class FlickTouchListener implements View.OnTouchListener {
     public int playerX = 0;
     public int playerY = 0;
 
-    private int move = 5;
+    private int move = 50;
 
     // 最後にタッチされた座標
     private float startTouchX;
@@ -35,17 +35,11 @@ public class FlickTouchListener implements View.OnTouchListener {
     @Override
     public boolean onTouch(android.view.View v_, MotionEvent event_) {
 
-        if (player != null) {
-            player.move(-playerX, playerY);
-            playerX = 0;
-            playerY = 0;
-        }
-
         if (enemy != null) {
             Random random = new Random(1);
             enemy.move(-playerX, playerY);
-            playerX = 0;
-            playerY = 0;
+//            playerX = 0;
+//            playerY = 0;
         }
 
         // タッチされている指の本数
@@ -141,6 +135,12 @@ public class FlickTouchListener implements View.OnTouchListener {
                         }
                     }
                 }
+
+                if (player != null) {
+                    player.move(-playerX, playerY);
+                    playerX = 0;
+                    playerY = 0;
+                }
                 break;
 
             // アップ後にほかの指がタッチ中の場合
@@ -151,6 +151,7 @@ public class FlickTouchListener implements View.OnTouchListener {
             // UP+DOWNの同時発生(タッチのキャンセル）
             case MotionEvent.ACTION_CANCEL:
 //                Log.v("motionEvent", "--ACTION_CANCEL");
+                break;
 
                 // ターゲットとするUIの範囲外を押下
             case MotionEvent.ACTION_OUTSIDE:

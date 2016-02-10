@@ -95,6 +95,7 @@ public class Map implements Player.OnMoveListener, Enemy.OnMoveListener {
                 }
                 if (targetBlock[y][x].type == Block.TYPE_WALL
                         && targetBlock[y][x].rect.intersects(left, top, right, bottom)) {
+                    Log.e("log :", "wall");
                     return false;
                 } else if (targetBlock[y][x].type == Block.TYPE_GOAL
                         && targetBlock[y][x].rect.contains(left, top, right, bottom)) {

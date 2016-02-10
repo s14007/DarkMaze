@@ -67,8 +67,8 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
                 break;
         }
 
-        player = flickTouchListener.player;
-        enemy = flickTouchListener.enemy;
+//        player = flickTouchListener.player;
+//        enemy = flickTouchListener.enemy;
 
         if (map == null) {
             map = new Map(canvas.getWidth(), canvas.getHeight(), blockSize, callback);
@@ -80,10 +80,10 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
             player.setOnMoveListener(map);
         }
 
-        if (enemy == null) {
+        /*if (enemy == null) {
             enemy = new Enemy(enemyBitmap, map.getStartBlock(), BALL_SCALE);
             enemy.setOnMoveListener(map);
-        }
+        }*/
 
         flickTouchListener.player = player;
         flickTouchListener.enemy = enemy;
@@ -96,7 +96,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRect(map.getStartBlock().rect, paint);
         canvas.drawRect(map.getGoalBlock().rect, paintGoal);
         player.draw(canvas);
-        enemy.draw(canvas);
+//        enemy.draw(canvas);
     }
 
     public void setCallback(Callback callback) {
