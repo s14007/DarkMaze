@@ -40,13 +40,17 @@ public class Player {
     void move(int xOffset, int yOffset) {
         int align = yOffset >= 0 ? 1 : -1;
         while (!tryMoveVertical(yOffset)) {
+            Log.e("logYOffset :", String.valueOf(yOffset));
             yOffset -= align;
         }
+//        tryMoveVertical(yOffset);
 
         align = xOffset >= 0 ? 1 : -1;
         while (!tryMoveHorizontal(xOffset)) {
+            Log.e("logXOffset :", String.valueOf(xOffset));
             xOffset -= align;
         }
+//        tryMoveHorizontal(xOffset);
     }
 
     private boolean tryMoveHorizontal(int xOffset) {

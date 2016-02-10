@@ -106,6 +106,9 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
 
     @Override
     public void onGoal() {
+        if (view.isFinished) {
+            return;
+        }
         Toast.makeText(this, "Goal!!", Toast.LENGTH_SHORT).show();
         view.stopDrawThread();
         mainTimer.cancel();

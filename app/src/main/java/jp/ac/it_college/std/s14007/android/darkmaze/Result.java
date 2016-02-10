@@ -1,6 +1,7 @@
 package jp.ac.it_college.std.s14007.android.darkmaze;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ public class Result extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         finish();
+        Intent intent = new Intent(this, Home.class);
+        startActivity(intent);
         return true;
     }
 }

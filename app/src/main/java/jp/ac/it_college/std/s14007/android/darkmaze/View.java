@@ -14,7 +14,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
 
     private Map map;
 
-    private DrawThread drawThread;
+    public DrawThread drawThread;
     private Bitmap playerBitmap;
     private Bitmap enemyBitmap;
     private FlickTouchListener flickTouchListener = new FlickTouchListener();
@@ -23,6 +23,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
     private static final float BALL_SCALE = 0.8f;
     private Callback callback;
     private int dungeonLevel;
+    boolean isFinished = false;
 
     public View(Context context, int dungeonLevel) {
         super(context);
@@ -48,7 +49,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
             return false;
         }
 
-        drawThread.isFinished = true;
+        isFinished = true;
         drawThread = null;
         return true;
     }
@@ -117,8 +118,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         stopDrawThread();
     }
 
-    private class DrawThread extends Thread {
-        private boolean isFinished;
+    public class DrawThread extends Thread {
 
         @Override
         public void run() {
