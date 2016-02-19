@@ -26,9 +26,10 @@ public class Result extends AppCompatActivity {
         if (minute <= 2) {
             TextView rank = (TextView)findViewById(R.id.rank);
             rank.setText("SSS");
-            exp = 0;
+            exp = 50;
 
-
+            TextView expPoint = (TextView)findViewById(R.id.exp_point);
+            expPoint.setText(String.valueOf(exp));
             SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
             int getExp = prefs.getInt("exp", 0);
             exp += getExp;

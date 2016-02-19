@@ -1,5 +1,6 @@
 package jp.ac.it_college.std.s14007.android.darkmaze;
 
+import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,11 +37,31 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
 
         SharedPreferences prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
         int exp = prefs.getInt("exp", 0);
+        int level = prefs.getInt("level", 0);
+
+        Log.e("log :", "" + level);
+        Log.e("log :", "" + exp);
 
         ProgressBar bar = (ProgressBar)findViewById(R.id.progressBar1);
-        bar.setMax(100000000);
-        Log.e("log :", "" + exp);
-        bar.setProgress(exp);
+        bar.setMax(100);
+
+        TextView labelLevel = (TextView)findViewById(R.id.label_level);
+        SharedPreferences.Editor editor = prefs.edit();
+        while (true) {
+            ++level;
+            exp -= 100;
+            if (exp < 100) {
+                break;
+            }
+            Log.e("level :", "plus" + exp);
+        }
+
+
+        editor.putInt("level", level);
+        labelLevel.setText(String.valueOf(level));
+//        editor.putInt("level", 0);
+        int a = exp % 100;
+        bar.setProgress(a);
 
         Button button_hard = (Button)findViewById(R.id.button_hard);
         button_hard.setOnClickListener(new View.OnClickListener() {
@@ -106,16 +129,17 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
 
     @Override
     public void onGoal() {
-        if (view.isFinished) {
-            return;
-        }
         Toast.makeText(this, "Goal!!", Toast.LENGTH_SHORT).show();
         view.stopDrawThread();
         mainTimer.cancel();
+        Log.e("log :", "isFinished");
         Intent intent = new Intent(this, Result.class);
         intent.putExtra("time", count);
         intent.putExtra("minute", minuteCount);
         startActivity(intent);
+        if (view.isFinished) {
+            return;                                                                                                                                                                                                                                                                                                                                                             
+        }
         finish();
     }
 }
