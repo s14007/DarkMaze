@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
@@ -44,9 +45,16 @@ public class Result extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        finish();
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
+        finish();
+        Log.e("Result :", "call Home");
         return true;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
     }
 }

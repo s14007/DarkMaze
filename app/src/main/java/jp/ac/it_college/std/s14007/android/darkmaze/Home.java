@@ -1,20 +1,22 @@
 package jp.ac.it_college.std.s14007.android.darkmaze;
 
-import android.app.SharedElementCallback;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -141,5 +143,47 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
             return;                                                                                                                                                                                                                                                                                                                                                             
         }
         finish();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        this.finish();
+        Log.e("Home :", "finishしました");
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        DialogFragment newFragment = new TestDialogFragment(this);
+        newFragment.show(getFragmentManager(), "test");
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public static class TestDialogFragment extends DialogFragment {
+        private Context context;
+        public TestDialogFragment(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("タイトルに戻りますか？")
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                            Intent intent = new Intent(context, Title.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 }
