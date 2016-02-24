@@ -91,6 +91,12 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         flickTouchListener.player = player;
         flickTouchListener.enemy = enemy;
         map.drawMap(canvas);
+        Paint paint1 = new Paint();
+        paint1.setColor(Color.BLACK);
+        Path path = new Path();
+        path.addRect(0, 0, canvas.getWidth(), canvas.getHeight(), Path.Direction.CW);
+        path.addCircle(player.rect.left + 6, player.rect.top + 9, 25, Path.Direction.CCW);
+        canvas.drawPath(path, paint1);
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
         Paint paintGoal = new Paint();
@@ -98,13 +104,7 @@ public class View extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRect(map.getStartBlock().rect, paint);
         canvas.drawRect(map.getGoalBlock().rect, paintGoal);
         player.draw(canvas);
-        Paint paint1 = new Paint();
 //        enemy.draw(canvas);
-        paint1.setColor(Color.BLACK);
-        Path path = new Path();
-        path.addRect(0, 0, canvas.getWidth(), canvas.getHeight(), Path.Direction.CW);
-        path.addCircle(player.rect.left, player.rect.top, 100, Path.Direction.CCW);
-        canvas.drawPath(path, paint1);
     }
 
     public void setCallback(Callback callback) {

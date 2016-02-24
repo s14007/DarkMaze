@@ -8,9 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.view.*;
 
-/**
- * Created by s14007 on 16/02/22.
- */
 public class Dialog extends DialogFragment {
 
 }

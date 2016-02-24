@@ -19,7 +19,7 @@ public class FlickTouchListener implements View.OnTouchListener {
     public int playerX = 0;
     public int playerY = 0;
 
-    private int move = 50;
+    private int move = 10;
 
     // 最後にタッチされた座標
     private float startTouchX;
