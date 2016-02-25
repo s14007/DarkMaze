@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import java.util.concurrent.TimeUnit;
+
 public class Result extends AppCompatActivity {
 
     private int exp;
@@ -18,16 +20,31 @@ public class Result extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        int time = getIntent().getIntExtra("time", 0);
-        int minute = getIntent().getIntExtra("minute", 0);
+        long time = getIntent().getLongExtra("time", 0);
+        long minute = getIntent().getLongExtra("minute", 0);
+        int hour = getIntent().getIntExtra("hour", 0);
+        int dungeonLevel = getIntent().getIntExtra("dungeonLevel", 0);
 
         TextView clearTime = (TextView)findViewById(R.id.time);
-        clearTime.setText(String.valueOf(minute + ":" + time));
+        clearTime.setText(String.valueOf(TimeUnit.MILLISECONDS.toSeconds(minute - time)) + "s");
+
+
 
         if (minute <= 2) {
             TextView rank = (TextView)findViewById(R.id.rank);
             rank.setText("SSS");
-            exp = 50;
+
+            switch (dungeonLevel) {
+                case 0:
+                    exp = 50;
+                    break;
+                case 1:
+                    exp = 500;
+                    break;
+                case 2:
+                    exp = 5000;
+                    break;
+            }
 
             TextView expPoint = (TextView)findViewById(R.id.exp_point);
             expPoint.setText(String.valueOf(exp));

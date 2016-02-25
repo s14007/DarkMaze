@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,12 +26,17 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
     private jp.ac.it_college.std.s14007.android.darkmaze.View view;
     public int dungeonLevel;
 
+    private Chronometer chronometer;
     private Timer mainTimer;					//タイマー用
     private MainTimerTask mainTimerTask;
     private TextView countText;					//テキストビュー
+    private long start;
+    private long stop;
     private int count = 0;						//カウント
     private int minuteCount = 0;
+    private int hourCount = 0;
     private Handler mHandler = new Handler();   //UI Threadへのpost用ハンドラ
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +107,11 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
 
     @Override
     public void timer() {
-        mainTimer = new Timer();
-        mainTimerTask = new MainTimerTask();
-        //タイマースケジュール設定＆開始
-        mainTimer.schedule(mainTimerTask, 1000, 1000);
+        start = System.currentTimeMillis();
+//        mainTimer = new Timer();
+//        mainTimerTask = new MainTimerTask();
+//        //タイマースケジュール設定＆開始
+//        mainTimer.schedule(mainTimerTask, 1000, 1000);
         //テキストビュー
 //        countText = (TextView)findViewById(R.id.clear_time);
     }
@@ -119,7 +126,13 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
                     //実行間隔分を加算処理
                     count += 1;
                     if (count % 60 == 0) {
+                        count = 0;
                         minuteCount += 1;
+                    }
+
+                    if (minuteCount % 60 == 0) {
+                        minuteCount = 0;
+                        hourCount += 1;
                     }
                     //画面にカウントを表示
 //                    countText.setText(String.valueOf(count));
@@ -133,12 +146,17 @@ public class Home extends AppCompatActivity implements jp.ac.it_college.std.s140
     public void onGoal() {
         Toast.makeText(this, "Goal!!", Toast.LENGTH_SHORT).show();
         view.stopDrawThread();
-        mainTimer.cancel();
+
+        stop = System.currentTimeMillis();
+//        mainTimer.cancel();
         Log.e("log :", "isFinished");
         Intent intent = new Intent(this, Result.class);
-        intent.putExtra("time", count);
-        intent.putExtra("minute", minuteCount);
+        intent.putExtra("time", start);
+        intent.putExtra("minute", stop);
+        intent.putExtra("hour", hourCount);
+        intent.putExtra("dungeonLevel", dungeonLevel);
         startActivity(intent);
+//        chronometer.stop();
         if (view.isFinished) {
             return;                                                                                                                                                                                                                                                                                                                                                             
         }

@@ -1,7 +1,10 @@
 package jp.ac.it_college.std.s14007.android.darkmaze;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
@@ -10,7 +13,7 @@ public class Player {
     private static final Paint PAINT = new Paint();
     public final Rect rect;
     public final Rect srcRect;
-    private Bitmap player;
+    public Bitmap player;
     private OnMoveListener listener;
 
     public Player(Bitmap bitmap, int left, int top, float scale) {
